@@ -1,0 +1,32 @@
+{
+  "name": "pollstr",
+  "version": "1.0.0",
+  "description": "polling information from twitter",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lionbear/pollstr.git"
+  },
+  "keywords": [
+    "twitter",
+    "polling"
+  ],
+  "author": "Martin C. Richards",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/lionbear/pollstr/issues"
+  },
+  "homepage": "https://github.com/lionbear/pollstr#readme",
+  "devDependencies": {
+    "mocha": "2.4.5"
+  },
+  "dependencies": {
+    "cradle": "0.7.1",
+    "ramda": "0.20.0",
+    "twitter": "1.2.5"
+  }
+}

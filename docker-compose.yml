@@ -1,0 +1,17 @@
+version: '2'
+services:
+  db:
+    image: klaemo/couchdb
+    ports:
+      - "5984:5984"
+  worker:
+    build: .
+    env_file: .env
+    links:
+      - db
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
