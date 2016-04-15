@@ -3,7 +3,7 @@
 var cradle = require('cradle');
 
 cradle.setup({
-    host: process.env.DATABASE_URL,
+    host: process.env.COUCHDB_URL,
     cache: true,
     raw: false,
     forceSave: true
