@@ -27,9 +27,11 @@ try {
     try {
       repo.save(tweet);
     } catch(ex) {
+        console.log('Error: stream error');
       console.log(ex);
     }
   });
 } catch(ex){
+    console.log('Error: unexpected error');
   console.log(ex);
 }
