@@ -2,6 +2,8 @@
 
 let nano = require('nano')('http://' + process.env.COUCHDB_URL);
 
+console.log(process.env.COUCHDB_URL);
+
 exports.save = function(tweet) {
     nano.insert(tweet, tweet.id.toString(), function(err, body, header) {
         if(err) {
