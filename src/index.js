@@ -18,7 +18,7 @@ try {
   var stream = T.stream('statuses/filter',
                         { track: ['#anc', '#da', '#eff'],// 'economic freedom fighter',
                           //'african national congress', 'democratic alliance'],
-                          filter_level: 'medium',
+                          // filter_level: 'medium',
                           language: ['en','af','st','ve','zu','xh','tn','ts','nr','ss'] });
 
     console.log('Suceess: created stream');
