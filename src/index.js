@@ -13,7 +13,8 @@ while(true) {
         console.log('========================');
         console.log(ex);
         console.log('========================');
-        stream.stop();
+        if(stream)
+            stream.stop();
     }
 }
 
