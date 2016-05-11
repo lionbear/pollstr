@@ -1,53 +1,47 @@
 'use strict';
 
-var Twit = require('twit'),
-    R = require('ramda'),
-    repo = require('./lib/repo');
+const Promise = require('bluebird'),
+      Scrape = require('./lib/scraper'),
+      options = {
+          credentials: {
+              consumer_key: process.env.TWITTER_CONSUMER_KEY,
+              consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+              access_token: process.env.TWITTER_ACCESS_TOKEN,
+              access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRT
+          },
+          track: ['#anc', '#da', '#eff'],
+          filter_level: 'low',
+          language: ['en','af','st','ve','zu','xh','tn','ts','nr','ss']
+      };
 
-while(true) {
+let stream,
+    success = function(){
+        console.log('========================');
+        console.log('Success: unexpected success');
+        console.log('========================');
+    },
+    error = function(ex) {
+        console.log('========================');
+        console.log('Error: scrape failed to complete.');
+        console.log('========================');
+        console.log(ex);
+        stream.disconnect();
+        scrape(options).then(success, error);
+    };
+
+function scrape(options, cb) {
     try {
-        let stream = process();
+        var scrapper = new Scrape(options);
+        scrapper.process();
+        cb();
     } catch(ex){
         console.log('========================');
         console.log('Error: unexpected error');
         console.log('========================');
         console.log(ex);
         console.log('========================');
-        if(stream)
-            stream.stop();
+        cb(ex);
     }
-}
+};
 
-
-function process() {
-    var T = new Twit({
-        consumer_key: process.env.TWITTER_CONSUMER_KEY,
-        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token: process.env.TWITTER_ACCESS_TOKEN,
-        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-    });
-
-    console.log('Success: created twitter client');
-
-    var stream = T.stream('statuses/filter',
-                          { track: ['#anc', '#da', '#eff'],// 'economic freedom fighter',
-                            //'african national congress', 'democratic alliance'],
-                            // filter_level: 'medium',
-                            language: ['en','af','st','ve','zu','xh','tn','ts','nr','ss'] });
-
-    console.log('Suceess: created stream');
-
-    stream.on('tweet', function (tweet) {
-        try {
-            repo.save(tweet);
-        } catch(ex) {
-            console.log('========================');
-            console.log('Error: stream error');
-            console.log('========================');
-            console.log(ex);
-            console.log('========================');
-        }
-    });
-
-    return stream;
-}
+scrape(options).then(success, error);
