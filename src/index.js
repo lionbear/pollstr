@@ -12,9 +12,24 @@ const Promise = require('bluebird'),
           track: ['#anc', '#da', '#eff'],
           filter_level: 'low',
           language: ['en','af','st','ve','zu','xh','tn','ts','nr','ss']
-      };
+      },
+      RETRYINTERVAL = 30000;
 
 let stream,
+    scrape = Promise.promisify(function(options, cb) {
+        try {
+            var scrapper = new Scrape(options);
+            stream = scrapper.process();
+            cb();
+        } catch(ex){
+            console.log('========================');
+            console.log('Error: unexpected error');
+            console.log('========================');
+            console.log(ex);
+            console.log('========================');
+            cb(ex);
+        }
+    }),
     success = function(){
         console.log('========================');
         console.log('Success: unexpected success');
@@ -25,23 +40,12 @@ let stream,
         console.log('Error: scrape failed to complete.');
         console.log('========================');
         console.log(ex);
-        stream.disconnect();
+        if(stream)
+            stream.disconnect();
+        setInterval(run, RETRYINTERVAL);
+    },
+    run = function(){
         scrape(options).then(success, error);
     };
 
-function scrape(options, cb) {
-    try {
-        var scrapper = new Scrape(options);
-        scrapper.process();
-        cb();
-    } catch(ex){
-        console.log('========================');
-        console.log('Error: unexpected error');
-        console.log('========================');
-        console.log(ex);
-        console.log('========================');
-        cb(ex);
-    }
-};
-
-scrape(options).then(success, error);
+run();

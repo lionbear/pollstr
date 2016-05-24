@@ -1,7 +1,7 @@
 'use strict';
 const Twit = require('twit'),
       R = require('ramda'),
-      repo = require('./lib/repo');
+      repo = require('./repo');
 
 class Scrape {
 
@@ -26,5 +26,8 @@ class Scrape {
                 console.log('========================');
             }
         });
+        return stream;
     }
 }
+
+module.exports = Scrape;
