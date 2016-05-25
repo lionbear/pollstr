@@ -5,17 +5,17 @@ const Twit = require('twit'),
 
 class Scrape {
 
-    constructor(options){
+    constructor(options) {
         this.options = options;
         this.twit = new Twit(options.credentials);
-        this.stream = T.stream('statuses/filter',
-                               { track: options.track,
-                                 filter_level: options.filter_level,
-                                 language: options.language });
+        this.stream = this.twit.stream('statuses/filter',
+                                       { track: options.track,
+                                         filter_level: options.filter_level,
+                                         language: options.language });
     }
 
-    process(){
-        stream.on('tweet', function (tweet) {
+    process() {
+        this.stream.on('tweet', function (tweet) {
             try {
                 repo.save(tweet);
             } catch(ex) {
@@ -26,7 +26,7 @@ class Scrape {
                 console.log('========================');
             }
         });
-        return stream;
+        return this.stream;
     }
 }
 
